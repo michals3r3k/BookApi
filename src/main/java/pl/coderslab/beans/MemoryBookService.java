@@ -2,14 +2,14 @@ package pl.coderslab.beans;
 
 import org.springframework.stereotype.Service;
 import pl.coderslab.model.Book;
-
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
-public class MemoryBookService implements MemoryService{
+public class MemoryBookService implements MemoryService<Book>{
     private List<Book> listOfBooks;
-    private Long nextId;
+    private static Long nextId;
 
 
     public MemoryBookService() {
@@ -35,16 +35,20 @@ public class MemoryBookService implements MemoryService{
     }
 
     @Override
-    public Book edit() {
-        return null;
+    public Book edit(Book book) {
+        this.listOfBooks.set(this.listOfBooks.indexOf(this.listOfBooks.get(Math.toIntExact(book.getId())-1)), book);
+        return book;
     }
 
     @Override
-    public void delete() {
+    public void delete(Long id) {
+        this.listOfBooks = this.listOfBooks.stream().filter(book-> !book.getId().equals(id)).collect(Collectors.toList());
     }
 
     @Override
     public void add(Book book) {
+        book.setId(nextId++);
+        listOfBooks.add(book);
     }
 
     public List<Book> getListOfBooks() {
@@ -55,11 +59,4 @@ public class MemoryBookService implements MemoryService{
         this.listOfBooks = listOfBooks;
     }
 
-    public Long getNextId() {
-        return nextId;
-    }
-
-    public void setNextId(Long nextId) {
-        this.nextId = nextId;
-    }
 }
