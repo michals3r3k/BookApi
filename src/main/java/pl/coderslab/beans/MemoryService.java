@@ -1,12 +1,11 @@
 package pl.coderslab.beans;
 
-import pl.coderslab.model.Book;
 import java.util.List;
 
 public interface MemoryService <T>{
-    List<T> findAll();
-    T getElementById(Long id);
-    T edit(T t);
-    void delete(Long id);
-    void add(T t);
+    List<T> findBooks();
+    T getBookById(Long id);
+    T editBook(T t);
+    void deleteBook(Long id);
+    void addBook(T t);
 }
